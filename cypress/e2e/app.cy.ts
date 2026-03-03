@@ -6,8 +6,8 @@ describe('App', () => {
     cy.get('body').should('be.visible');
     cy.get('html').should('have.attr', 'lang');
 
-    // Check that the page has some content by looking for specific elements
-    cy.get('h1').should('contain', 'Modern Full-Stack Scaffold');
+    // Check that the LSAI landing page loads
+    cy.get('h1').should('contain', 'LSAI');
     cy.get('div').should('exist');
   });
 
