@@ -23,7 +23,7 @@ import type {
   MeetingRecord,
 } from './types';
 import { ASSEMBLY_MEMBERS, getChairperson, getSecretary, getSystemPrompt } from './members';
-import { getModelInstance } from './models';
+import { getModelInstance, directModelCall } from './models';
 import { OPENING_PRAYERS, CLOSING_PRAYERS } from './knowledge/prayers';
 
 const DEFAULT_CONFIG: ConsultationConfig = {
@@ -60,22 +60,43 @@ function formatContext(messages: ConsultationMessage[], topic: ConsultationTopic
   return `${topicBlock}${factsBlock}\n\nCONVERSATION SO FAR:\n${conversationBlock}`;
 }
 
-/** Call an individual agent and get their response */
+/**
+ * Call an individual agent and get their response.
+ * Tries Vercel AI SDK first; falls back to direct HTTP API calls if SDK fails.
+ */
 async function callAgent(
   member: AssemblyMember,
   userPrompt: string,
   maxOutputTokens: number,
 ): Promise<string> {
-  const model = getModelInstance(member.provider, member.modelId);
   const systemPrompt = getSystemPrompt(member);
 
-  const { text } = await generateText({
-    model,
+  // Primary path: Vercel AI SDK
+  try {
+    const model = getModelInstance(member.provider, member.modelId);
+    const { text } = await generateText({
+      model,
+      system: systemPrompt,
+      prompt: userPrompt,
+      maxOutputTokens,
+    });
+    return text.trim();
+  } catch (sdkError) {
+    // Log the SDK failure and try the direct fallback
+    console.warn(
+      `[LSAI] Vercel AI SDK call failed for ${member.name} (${member.provider}/${member.modelId}), falling back to direct API call:`,
+      sdkError instanceof Error ? sdkError.message : sdkError,
+    );
+  }
+
+  // Fallback path: Direct HTTP API calls
+  const text = await directModelCall({
+    provider: member.provider,
+    modelId: member.modelId,
     system: systemPrompt,
     prompt: userPrompt,
     maxOutputTokens,
   });
-
   return text.trim();
 }
 

@@ -18,17 +18,19 @@ LSAI is an AI-powered simulation of a Bahá'í [Local Spiritual Assembly](https:
 
 | Name | Role | Model | Personality |
 |------|------|-------|-------------|
-| Rúhíyyih | Chairperson | Claude Sonnet 4 | Thoughtful, seeks consensus |
-| Husayn | Vice-Chair | GPT-4o | Reliable, balanced |
-| Táhirih | Secretary | Claude 3.5 Haiku | Precise, organized |
-| Mullá | Treasurer | Gemini 2.0 Flash | Analytical, practical |
-| Bahíyyih | Member | GPT-4o-mini | Warm, empathetic |
-| Nabíl | Member | Claude 3.5 Sonnet | Philosophical |
-| Shoghi | Member | Gemini 1.5 Pro | Institutional perspective |
-| Munírih | Member | GPT-3.5-turbo | Earnest but sometimes off-base |
-| Zaynab | Member | GPT-4o | Action-oriented |
+| Rúhíyyih | Chairperson | Claude Opus 4.6 | Thoughtful, seeks consensus |
+| Husayn | Vice-Chair | GPT-5.2 | Reliable, balanced |
+| Táhirih | Secretary | Claude Sonnet 4.6 | Precise, organized |
+| Mullá | Treasurer | Gemini 3 Flash | Analytical, practical |
+| Bahíyyih | Member | GPT-4.1 Mini | Warm, empathetic |
+| Nabíl | Member | Claude Sonnet 4.6 | Philosophical |
+| Shoghi | Member | Gemini 2.5 Pro | Institutional perspective |
+| Munírih | Member | GPT-4.1 Mini | Earnest but sometimes off-base |
+| Zaynab | Member | GPT-5.2 | Action-oriented |
 
-Munírih uses a weaker model and occasionally says awkward things. The other eight handle it with characteristic Bahá'í grace — *"It is in no wise permissible for one to belittle the thought of another."*
+Munírih uses a smaller model and occasionally says awkward things. The other eight handle it with characteristic Bahá'í grace — *"It is in no wise permissible for one to belittle the thought of another."*
+
+> **Fallback support:** If the Vercel AI SDK fails for any model, LSAI automatically retries using direct HTTP calls to each provider's API. This ensures consultations complete even if there's a version mismatch or SDK issue.
 
 ---
 
