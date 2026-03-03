@@ -44,7 +44,7 @@ export const CONSULTATION_PROCESS = {
       number: 2,
       title: 'Consult the Writings',
       description:
-        'Review relevant guidance and principles from the Bahá'í Sacred Writings and the guidance of the Universal House of Justice.',
+        "Review relevant guidance and principles from the Bah\u00e1'\u00ed Sacred Writings and the guidance of the Universal House of Justice.",
     },
     {
       number: 3,
@@ -60,7 +60,7 @@ export const CONSULTATION_PROCESS = {
     },
   ],
   summary:
-    'Bahá'í consultation is a spiritual practice grounded in prayer, detachment, and the search for truth. It requires frankness with courtesy, and unity of purpose both before and after the decision.',
+    "Bah\u00e1'\u00ed consultation is a spiritual practice grounded in prayer, detachment, and the search for truth. It requires frankness with courtesy, and unity of purpose both before and after the decision.",
 } as const;
 
 /** The principle of unity after decision — critical to Bahá'í governance */
