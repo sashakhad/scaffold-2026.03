@@ -56,7 +56,6 @@ export async function POST(request: Request): Promise<Response> {
         const consultation = runConsultation(consultationTopic, { maxDiscussionRounds });
         let currentPhase = '';
 
-        // eslint-disable-next-line no-constant-condition
         while (true) {
           const { value, done } = await consultation.next();
 

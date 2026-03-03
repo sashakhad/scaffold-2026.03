@@ -43,7 +43,6 @@ export function ConsultationStream({
   isActive,
 }: ConsultationStreamProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const lastPhaseRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -74,11 +73,6 @@ export function ConsultationStream({
         {messages.map((msg, index) => {
           const showPhaseHeader =
             index === 0 || messages[index - 1]?.phase !== msg.phase;
-
-          // Track phase changes
-          if (showPhaseHeader && msg.phase !== lastPhaseRef.current) {
-            lastPhaseRef.current = msg.phase;
-          }
 
           return (
             <div key={index}>

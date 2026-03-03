@@ -113,8 +113,8 @@ export type MeetingRecord = {
 export type ConsultationConfig = {
   /** Maximum number of discussion rounds (default: 3) */
   maxDiscussionRounds: number;
-  /** Maximum tokens per individual agent response */
-  maxTokensPerResponse: number;
+  /** Maximum output tokens per individual agent response */
+  maxOutputTokensPerResponse: number;
 };
 
 /** Serialized consultation message for SSE streaming */

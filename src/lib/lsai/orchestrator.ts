@@ -28,7 +28,7 @@ import { OPENING_PRAYERS, CLOSING_PRAYERS } from './knowledge/prayers';
 
 const DEFAULT_CONFIG: ConsultationConfig = {
   maxDiscussionRounds: 3,
-  maxTokensPerResponse: 300,
+  maxOutputTokensPerResponse: 300,
 };
 
 /** Shuffle an array (Fisher-Yates) to randomize speaking order */
@@ -64,7 +64,7 @@ function formatContext(messages: ConsultationMessage[], topic: ConsultationTopic
 async function callAgent(
   member: AssemblyMember,
   userPrompt: string,
-  maxTokens: number,
+  maxOutputTokens: number,
 ): Promise<string> {
   const model = getModelInstance(member.provider, member.modelId);
   const systemPrompt = getSystemPrompt(member);
@@ -73,7 +73,7 @@ async function callAgent(
     model,
     system: systemPrompt,
     prompt: userPrompt,
-    maxTokens,
+    maxOutputTokens,
   });
 
   return text.trim();
@@ -133,7 +133,7 @@ export async function* runConsultation(
   const welcomeContent = await callAgent(
     chairperson,
     `You are opening an assembly meeting. The topic for consultation is:\n\nTitle: ${topic.title}\nDescription: ${topic.description}\n\nWelcome the assembly members, briefly acknowledge the prayer, and introduce the topic. Keep it to 3-4 sentences.`,
-    fullConfig.maxTokensPerResponse,
+    fullConfig.maxOutputTokensPerResponse,
   );
   yield* emit(createMessage(chairperson, welcomeContent, 'opening-prayer', 0, 'procedural'));
 
@@ -143,7 +143,7 @@ export async function* runConsultation(
   const factInvite = await callAgent(
     chairperson,
     `${formatContext(messages, topic)}\n\nYou've introduced the topic. Now invite the assembly members to share any relevant facts, information, or context they have about this matter. Keep it to 1-2 sentences.`,
-    fullConfig.maxTokensPerResponse,
+    fullConfig.maxOutputTokensPerResponse,
   );
   yield* emit(createMessage(chairperson, factInvite, 'fact-gathering', 0, 'procedural'));
 
@@ -155,7 +155,7 @@ export async function* runConsultation(
     const factContent = await callAgent(
       member,
       `${formatContext(messages, topic)}\n\nThe Chairperson has asked the assembly to share relevant facts and context about this topic. Share any facts, observations, or relevant information you have. If you don't have specific facts, share what you've observed or heard from the community. Keep it brief — 2-3 sentences.`,
-      fullConfig.maxTokensPerResponse,
+      fullConfig.maxOutputTokensPerResponse,
     );
     yield* emit(createMessage(member, factContent, 'fact-gathering', 0, 'fact'));
   }
@@ -164,7 +164,7 @@ export async function* runConsultation(
   const factSummary = await callAgent(
     secretary,
     `${formatContext(messages, topic)}\n\nAll members have shared their facts and observations. Provide a concise summary of the key facts and information that has been shared. Organize them clearly. Keep it to 4-6 sentences.`,
-    fullConfig.maxTokensPerResponse * 2,
+    fullConfig.maxOutputTokensPerResponse * 2,
   );
   yield* emit(createMessage(secretary, factSummary, 'fact-gathering', 0, 'summary'));
 
@@ -174,7 +174,7 @@ export async function* runConsultation(
   const discussionOpen = await callAgent(
     chairperson,
     `${formatContext(messages, topic)}\n\nThe facts have been gathered and summarized. Now open the floor for full consultation. Remind members of the consultation principles briefly and invite them to share their views. Keep it to 2-3 sentences.`,
-    fullConfig.maxTokensPerResponse,
+    fullConfig.maxOutputTokensPerResponse,
   );
   yield* emit(createMessage(chairperson, discussionOpen, 'discussion', 1, 'procedural'));
 
@@ -191,7 +191,7 @@ export async function* runConsultation(
       const discussionContent = await callAgent(
         member,
         `${formatContext(messages, topic)}\n\n${roundContext} Share your view on this topic. You may agree or disagree with points already made, offer new perspectives, or build on others' contributions. Remember to be frank but courteous. Keep it to 2-4 sentences.`,
-        fullConfig.maxTokensPerResponse,
+        fullConfig.maxOutputTokensPerResponse,
       );
       yield* emit(createMessage(member, discussionContent, 'discussion', round, 'opinion'));
     }
@@ -205,7 +205,7 @@ export async function* runConsultation(
     const roundSummary = await callAgent(
       chairperson,
       roundSummaryPrompt,
-      fullConfig.maxTokensPerResponse * 2,
+      fullConfig.maxOutputTokensPerResponse * 2,
     );
     yield* emit(
       createMessage(
@@ -227,7 +227,7 @@ export async function* runConsultation(
     const voteContent = await callAgent(
       member,
       `${formatContext(messages, topic)}\n\nThe Chairperson has proposed a decision. Cast your vote: do you support this decision? Respond in the format: "I vote [in favor / against]. [Brief 1-2 sentence reason]." Remember: even if you have reservations, consider whether the proposed decision serves the community.`,
-      fullConfig.maxTokensPerResponse,
+      fullConfig.maxOutputTokensPerResponse,
     );
 
     yield* emit(createMessage(member, voteContent, 'decision', 0, 'vote'));
@@ -258,7 +258,7 @@ export async function* runConsultation(
   const decisionAnnouncement = await callAgent(
     chairperson,
     decisionAnnouncementPrompt,
-    fullConfig.maxTokensPerResponse * 2,
+    fullConfig.maxOutputTokensPerResponse * 2,
   );
   yield* emit(createMessage(chairperson, decisionAnnouncement, 'decision', 0, 'procedural'));
 
@@ -268,7 +268,7 @@ export async function* runConsultation(
   const finalSummary = await callAgent(
     secretary,
     `${formatContext(messages, topic)}\n\nThe consultation and vote are complete. Present a formal summary of the meeting for the record. Include: the topic, key points from the discussion, the decision reached, and the vote count. Keep it to 5-8 sentences.`,
-    fullConfig.maxTokensPerResponse * 3,
+    fullConfig.maxOutputTokensPerResponse * 3,
   );
   yield* emit(createMessage(secretary, finalSummary, 'closing-prayer', 0, 'summary'));
 
