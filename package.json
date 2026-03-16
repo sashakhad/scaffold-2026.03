@@ -21,6 +21,7 @@
     "test:coverage": "jest --coverage",
     "test:e2e": "cypress run",
     "test:e2e:open": "cypress open",
+    "bump:scaffold": "bash ./scripts/bump-scaffold.sh",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
