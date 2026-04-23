@@ -8,11 +8,11 @@ A clean, modern scaffold for full-stack web applications built with Next.js App 
 
 This project uses **Cursor commands** to make everything easy. Just type these commands in the Cursor chat:
 
-| Command | What it does |
-|---------|--------------|
-| `/setup` | Installs everything your project needs |
-| `/start` | Launches your app so you can see it in the browser |
-| `/new-project` | Creates a fresh copy of this template for a new project |
+| Command        | What it does                                                                 |
+| -------------- | ---------------------------------------------------------------------------- |
+| `/setup`       | Installs everything your project needs                                       |
+| `/start`       | Launches your app so you can see it in the browser                           |
+| `/new-project` | Creates a fresh copy of this template and pushes it to a private GitHub repo |
 
 ---
 
@@ -37,9 +37,12 @@ Want to create a new project using this template?
 
 1. Type `/new-project` in the chat
 2. Enter a name for your project (like `my-cool-app`)
-3. Follow the instructions to open your new project in Cursor
-4. Run `/setup` in the new project
-5. Run `/start` to launch it
+3. Choose whether the private GitHub repo should live under your personal account or an available organization
+4. Follow the instructions to open your new project folder in Cursor
+5. Run `/setup` in the new project
+6. Run `/start` to launch it
+
+`/new-project` creates a local folder and private GitHub repo only. It does not deploy to Vercel.
 
 ---
 
